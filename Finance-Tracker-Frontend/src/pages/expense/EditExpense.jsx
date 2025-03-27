@@ -13,13 +13,17 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
     description: "",
     budgetId: "",
     amount: "",
+
   });
+
   const userId = user.id;
   const [isListening, setIsListening] = useState({
     title: false,
     description: false,
     amount: false,
+
   });
+  
   const [errors, setErrors] = useState({});
   const [budget, setBudget] = useState([]);
   const recognitionRef = useRef(null);
