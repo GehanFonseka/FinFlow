@@ -14,6 +14,7 @@ import AddGoal from "../pages/goal/AddGoal";
 import Expense from "../pages/expense/Expense";
 import AddExpense from "../pages/expense/AddExpense";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
