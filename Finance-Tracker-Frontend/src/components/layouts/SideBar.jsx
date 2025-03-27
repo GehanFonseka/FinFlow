@@ -8,6 +8,7 @@ import { ArrowDown, ArrowRight, UserProfileIcon } from "../../utils/icons";
 import { useStateContext } from "../../contexts/NavigationContext";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 
+
 import {
   GoalIcon,
   MoneyIcon,
@@ -15,32 +16,38 @@ import {
   BudgetIcon,
 } from "../../utils/icons";
 
+
 const newNavigationItems = [
   {
     title: "Dashboard",
     link: "/",
     icon: ChartBarIcon,
   },
+
   {
     title: "Budget",
     link: "/budget",
     icon: BudgetIcon,
   },
+
   {
     title: "Income",
     link: "/income",
     icon: MoneyIcon,
   },
+
   {
     title: "Expense",
     link: "/expense",
     icon: ExpensiveIcon,
   },
+
   {
     title: "Goal",
     link: "/goal",
     icon: GoalIcon,
   },
+  
 ];
 
 export const SideBar = ({ handleSidebar, sidebar }) => {
