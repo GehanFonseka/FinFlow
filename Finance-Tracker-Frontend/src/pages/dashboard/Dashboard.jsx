@@ -10,8 +10,10 @@ export const Dashboard = () => {
   const { user } = useStateContext();
   const userId = user.id;
 
+
   const [data, setData] = useState([]);
   const [budget, setBudget] = useState([]);
+  
 
   const fetchDashBoardData = async () => {
     try {
