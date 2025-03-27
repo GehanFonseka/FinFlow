@@ -19,8 +19,10 @@ export const ContextProvider = ({ children }) => {
   const [user, _setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
   const [token, _setToken] = useState(Cookies.get("_auth"));
   const [color, setColor] = useState("#00FF00");
-  
 
+
+
+  
   const setToken = (token) => {
     _setToken(token);
     if (token) {
