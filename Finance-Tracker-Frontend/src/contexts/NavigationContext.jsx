@@ -22,7 +22,7 @@ export const ContextProvider = ({ children }) => {
 
 
 
-  
+
   const setToken = (token) => {
     _setToken(token);
     if (token) {
@@ -30,6 +30,7 @@ export const ContextProvider = ({ children }) => {
     } else {
       Cookies.remove("_auth");
     }
+
   };
 
   const setUser = (user) => {
@@ -39,6 +40,7 @@ export const ContextProvider = ({ children }) => {
     } else {
       Cookies.remove("_user");
     }
+
   };
 
   return (
@@ -54,10 +56,12 @@ export const ContextProvider = ({ children }) => {
       {children}
     </StateContext.Provider>
   );
+
 };
 
 ContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
+  
 };
 
 export const useStateContext = () => useContext(StateContext);
