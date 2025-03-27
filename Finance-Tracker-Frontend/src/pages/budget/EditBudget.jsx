@@ -12,10 +12,12 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
     budgetName: false,
     price: false,
   });
+
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);
   useEffect(() => {
+
     if (selectedBudgetId) {
       axiosClient
         .get(`/budget/${selectedBudgetId}`)
@@ -28,6 +30,7 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
         });
     }
   }, [selectedBudgetId]);
+  
 
   if (!recognitionRef.current && "webkitSpeechRecognition" in window) {
     recognitionRef.current = new window.webkitSpeechRecognition();

@@ -16,12 +16,16 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     amount: "",
     budgetId: "",
     userId: userId,
+
   });
+
   const [isListening, setIsListening] = useState({
     title: false,
     description: false,
     amount: false,
+
   });
+  
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);

@@ -6,6 +6,7 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const AddGoal = ({ isOpen, onClose, fetchGoal }) => {
   const { user } = useStateContext();
   const userId = user.id;
@@ -15,11 +16,14 @@ const AddGoal = ({ isOpen, onClose, fetchGoal }) => {
     amount: "",
     userId: userId,
   });
+
   const [isListening, setIsListening] = useState({
     title: false,
     description: false,
     amount: false,
+
   });
+  
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);

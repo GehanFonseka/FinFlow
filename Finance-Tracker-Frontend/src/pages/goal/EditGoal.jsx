@@ -11,11 +11,13 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
     description: "",
     amount: "",
   });
+
   const [isListening, setIsListening] = useState({
     title: false,
     description: false,
     amount: false,
   });
+  
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);

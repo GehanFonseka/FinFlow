@@ -13,11 +13,13 @@ export const MainLayout = () => {
   const sideBardownRef = useRef(null);
   const sideBarButtondownRef = useRef(null);
 
+
   const { token, setUser, setToken, user } = useStateContext();
   const handleLogout = () => {
     setUser(null);
     setToken(null);
   };
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -25,9 +27,12 @@ export const MainLayout = () => {
         setSignOutVisible(false);
       }
 
+
+
       if (
         sideBardownRef.current &&
         !sideBardownRef.current.contains(event.target)
+
       ) {
         if (
           sideBarButtondownRef.current &&
@@ -39,10 +44,12 @@ export const MainLayout = () => {
         }
       }
     };
+
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
+    
   }, []);
 
   const location = useLocation();

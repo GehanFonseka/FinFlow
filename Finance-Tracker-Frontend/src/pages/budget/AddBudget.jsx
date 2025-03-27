@@ -9,19 +9,23 @@ import "react-toastify/dist/ReactToastify.css";
 const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
   const { user } = useStateContext();
 
+
   const userId = user.id;
   const [formData, setFormData] = useState({
     budgetName: "",
     price: "",
     userId: userId,
+
   });
   const [isListening, setIsListening] = useState({
     budgetName: false,
     price: false,
+
   });
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);
+  
 
   if (!recognitionRef.current && "webkitSpeechRecognition" in window) {
     recognitionRef.current = new window.webkitSpeechRecognition();

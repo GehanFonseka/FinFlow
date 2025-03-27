@@ -6,6 +6,7 @@ import {
   Typography,
   Input,
   Button,
+
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -18,11 +19,13 @@ export const SignUp = () => {
     password: "",
   });
 
+
   const [formErrors, setFormErrors] = useState({
     name: "",
     email: "",
     password: "",
   });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,12 +34,14 @@ export const SignUp = () => {
       [name]: value,
     }));
 
+
     // Reset error message when user starts typing
     setFormErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
     }));
   };
+  
 
   const navigate = useNavigate();
 

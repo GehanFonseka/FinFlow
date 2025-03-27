@@ -7,15 +7,18 @@ import {
   Typography,
   Input,
   Button,
+
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { useStateContext } from "../contexts/NavigationContext";
 
+
 export const Login = () => {
   const { setUser, setToken } = useStateContext();
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -25,7 +28,9 @@ export const Login = () => {
     password: "",
   });
 
+
   const [errors, setErrors] = useState("");
+
 
   const validate = (loginData) => {
     const errors = {};
@@ -38,6 +43,7 @@ export const Login = () => {
     setFormErrors(errors);
     return errors;
   };
+  
 
   // Handle login form submission
   const handleLogin = (e) => {

@@ -12,6 +12,7 @@ const GoalSummary = ({ data }) => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  
   return (
     <div className="bg-white p-4 mb-5">
       <div className="flex gap-10">

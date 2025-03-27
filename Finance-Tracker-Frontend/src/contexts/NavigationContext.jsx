@@ -4,6 +4,7 @@ import { createContext, useContext, useState } from "react";
 import Cookies from "js-cookie";
 import PropTypes from "prop-types"; // Import PropTypes
 
+
 const StateContext = createContext({
   user: null,
   token: null,
@@ -12,11 +13,15 @@ const StateContext = createContext({
   setToken: () => {},
 });
 
+
 export const ContextProvider = ({ children }) => {
   const storedUser = Cookies.get("_user");
   const [user, _setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
   const [token, _setToken] = useState(Cookies.get("_auth"));
   const [color, setColor] = useState("#00FF00");
+
+
+
 
   const setToken = (token) => {
     _setToken(token);
@@ -25,6 +30,7 @@ export const ContextProvider = ({ children }) => {
     } else {
       Cookies.remove("_auth");
     }
+
   };
 
   const setUser = (user) => {
@@ -34,6 +40,7 @@ export const ContextProvider = ({ children }) => {
     } else {
       Cookies.remove("_user");
     }
+
   };
 
   return (
@@ -49,10 +56,12 @@ export const ContextProvider = ({ children }) => {
       {children}
     </StateContext.Provider>
   );
+
 };
 
 ContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
+  
 };
 
 export const useStateContext = () => useContext(StateContext);

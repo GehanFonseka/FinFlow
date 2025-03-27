@@ -8,10 +8,14 @@ body {
 }
 
 
+
+
 .timeline {
     position: relative;
     margin: 0 auto;
 }
+
+
 
 .timeline::after {
     content: '';

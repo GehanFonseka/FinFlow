@@ -3,6 +3,7 @@ import { ExpenseIcon, IncomeIcon, SavingIcon, WalletIcon } from "../../utils/ico
 
 const Summary = ({ data }) => {
   return (
+    
     <div className="flex gap-10">
       <div className="h-auto w-1/4 border-2 border-black bg-[black] p-4">
       <div className="px-2 py-1  bg-green-800  w-[45px] rounded-full mb-4"><WalletIcon/></div>
@@ -13,6 +14,7 @@ const Summary = ({ data }) => {
         Rs.{data.totalSaving ? parseFloat(data.totalSaving).toFixed(2) : "0.00"}
         </div>
       </div>
+
 
       <div className="h-auto w-1/4 border-2 border-white bg-white p-4">
       <div className="px-2 py-1  bg-gray-200  w-[45px] rounded-full mb-4"><SavingIcon/></div>
