@@ -9,11 +9,13 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 
 
+
 import {
   GoalIcon,
   MoneyIcon,
   ExpensiveIcon,
   BudgetIcon,
+  
 } from "../../utils/icons";
 
 
@@ -47,7 +49,7 @@ const newNavigationItems = [
     link: "/goal",
     icon: GoalIcon,
   },
-  
+
 ];
 
 export const SideBar = ({ handleSidebar, sidebar }) => {
