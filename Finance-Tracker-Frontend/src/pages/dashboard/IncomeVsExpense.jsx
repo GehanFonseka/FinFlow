@@ -4,12 +4,14 @@ import Chart from "react-apexcharts";
 const IncomeVsExpense = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const currentYear = new Date().getFullYear();
+  
 
   useEffect(() => {
     if (data && data.allIncome && data.allExpenses) {
       setLoading(false);
     }
   }, [data]);
+
 
   const months = [
     "Jan",
