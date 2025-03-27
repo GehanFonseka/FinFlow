@@ -13,17 +13,20 @@ export const MainLayout = () => {
   const sideBardownRef = useRef(null);
   const sideBarButtondownRef = useRef(null);
 
+
   const { token, setUser, setToken, user } = useStateContext();
   const handleLogout = () => {
     setUser(null);
     setToken(null);
   };
 
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setSignOutVisible(false);
       }
+      
 
       if (
         sideBardownRef.current &&
