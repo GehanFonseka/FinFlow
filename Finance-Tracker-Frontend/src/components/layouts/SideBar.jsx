@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "./../../assets/images/logo.jpg";
 import { useState } from "react";
 import { useEffect } from "react";
-import { ArrowDown, ArrowRight, UserProfileIcon } from "../../utils/icons";
+import { ReportIcon, UserProfileIcon } from "../../utils/icons";
 import { useStateContext } from "../../contexts/NavigationContext";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 
@@ -40,6 +40,11 @@ const newNavigationItems = [
     title: "Goal",
     link: "/goal",
     icon: GoalIcon,
+  },
+  {
+    title: "Reports",
+    link: "/reports",
+    icon: ReportIcon,
   },
 ];
 

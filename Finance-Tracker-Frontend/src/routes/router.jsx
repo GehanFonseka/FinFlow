@@ -13,6 +13,7 @@ import Goal from "../pages/goal/Goal";
 import AddGoal from "../pages/goal/AddGoal";
 import Expense from "../pages/expense/Expense";
 import AddExpense from "../pages/expense/AddExpense";
+import Report from "../pages/reports/Report";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/expense/add",
         element: <AddExpense />,
+      },
+      {
+        path: "/reports",
+        element: <Report />,
       },
     ],
   },

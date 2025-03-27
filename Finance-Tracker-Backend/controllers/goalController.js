@@ -17,14 +17,13 @@ exports.createGoal = async (req, res) => {
 exports.getGoals = async (req, res) => {
   const { userId } = req.params;
   try {
-    const goals = await Goal.find({ userId, status: { $ne: 1 } }); 
+    const goals = await Goal.find({ userId, status: { $ne: 1 } });
     res.status(200).json(goals);
   } catch (err) {
     console.error("Get Goals Error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
 
 exports.getGoalById = async (req, res) => {
   const { id } = req.params;
