@@ -9,6 +9,7 @@ const BudgetVsExpense = ({
   const chartData = [totalUsedAmount, totalRemainingAmount];
   const chartLabels = ["Total Used Amount", "Total Remaining Amount"];
 
+
   const chartConfig = {
     series: chartData,
     options: {
@@ -30,6 +31,7 @@ const BudgetVsExpense = ({
                 color: "#263238",
                 offsetY: -10,
               },
+
               value: {
                 show: true,
                 fontSize: "16px",
@@ -38,6 +40,7 @@ const BudgetVsExpense = ({
                 color: "#263238",
                 offsetY: 10,
               },
+
               total: {
                 show: true,
                 showAlways: true,
@@ -46,6 +49,7 @@ const BudgetVsExpense = ({
                 fontFamily: "Poppins",
                 fontWeight: 700,
                 color: "#222529",
+                
               },
             },
           },
