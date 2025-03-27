@@ -4,6 +4,8 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../../contexts/NavigationContext";
 import NavBar from "./NavBar";
 
+
+
 export const GuestLayout = () => {
   const { token } = useStateContext();
 
