@@ -7,6 +7,7 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import Swal from "sweetalert2";
 import EditGoal from "./EditGoal";
 
+
 const Goal = () => {
   const { user } = useStateContext();
   const userId = user.id;
@@ -17,6 +18,7 @@ const Goal = () => {
   const [wallet, setWallet] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredGoal, setFilteredGoal] = useState([]);
+
 
   const fetchGoal = async () => {
     try {
@@ -29,6 +31,7 @@ const Goal = () => {
     }
   };
 
+
   const fetchWallet = async () => {
     try {
       const response = await axiosClient.get(`/wallet/user/${userId}`);
@@ -38,6 +41,7 @@ const Goal = () => {
       toast.error("Failed to fetch wallet");
     }
   };
+  
 
   useEffect(() => {
     fetchGoal();
