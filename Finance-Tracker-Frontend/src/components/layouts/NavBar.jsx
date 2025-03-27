@@ -2,6 +2,7 @@ import React from "react";
 import logo from '../../assets/images/logo.jpg';
 import { Link } from "react-router-dom";
 
+
 const NavBar = () => {
   return (
     <div className="flex justify-between w-full h-[80px] bg-black text-white px-10">
@@ -15,5 +16,6 @@ const NavBar = () => {
     </div>
   );
 };
+
 
 export default NavBar;
