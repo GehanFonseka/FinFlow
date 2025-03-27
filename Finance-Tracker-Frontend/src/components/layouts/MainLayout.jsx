@@ -26,11 +26,13 @@ export const MainLayout = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setSignOutVisible(false);
       }
-      
+
+
 
       if (
         sideBardownRef.current &&
         !sideBardownRef.current.contains(event.target)
+
       ) {
         if (
           sideBarButtondownRef.current &&
@@ -42,10 +44,12 @@ export const MainLayout = () => {
         }
       }
     };
+
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
+    
   }, []);
 
   const location = useLocation();
