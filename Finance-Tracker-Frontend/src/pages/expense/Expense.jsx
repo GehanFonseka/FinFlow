@@ -7,6 +7,7 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import Swal from "sweetalert2";
 import EditExpense from "./EditExpense";
 
+
 const Expense = () => {
   const { user } = useStateContext();
   const userId = user.id;
@@ -16,6 +17,7 @@ const Expense = () => {
   const [expense, setExpense] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredExpense, setFilteredExpense] = useState([]);
+
 
   const fetchExpense = async () => {
     try {
@@ -30,6 +32,7 @@ const Expense = () => {
       toast.error("Failed to fetch Expenses");
     }
   };
+  
 
   useEffect(() => {
     fetchExpense();
