@@ -9,7 +9,8 @@ export const Loader = () => {
       transform: 'translate(-50%, -50%)',
       textAlign: 'center',
     }}>
-      
+       
+       
       <span class="loader">
         <span class="loader-inner"></span>
       </span>
