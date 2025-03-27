@@ -6,6 +6,8 @@ body {
   @apply bg-white overflow-x-hidden relative;
 }
 
+
+
 @keyframes pulse-circle {
   from {
     transform: scale(1);
