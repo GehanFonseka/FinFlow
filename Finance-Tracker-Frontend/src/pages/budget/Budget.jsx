@@ -7,6 +7,7 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import Swal from "sweetalert2";
 import EditBudget from "./EditBudget";
 
+
 const Budget = () => {
   const { user } = useStateContext();
   const userId = user.id;
@@ -16,6 +17,7 @@ const Budget = () => {
   const [budget, setBudget] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBudget, setFilteredBudget] = useState([]);
+  
 
   const fetchBudget = async () => {
     try {
