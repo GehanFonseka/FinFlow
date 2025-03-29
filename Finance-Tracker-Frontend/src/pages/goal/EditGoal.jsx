@@ -248,13 +248,11 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                   </button>
                 )}
               </div>
-              
             </div>
             {errors.amount && (
               <p className="text-sm text-red-500">{errors.amount}</p>
             )}
           </div>
-
           <button
             onClick={handleSubmit}
             className="mt-4 w-[130px] rounded-md bg-[#25C935] px-4 py-[6px] text-[15px] font-semibold text-white"
