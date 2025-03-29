@@ -184,7 +184,6 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
               <p className="text-sm text-red-500">{errors.title}</p>
             )}
           </div>
-
           <div className="mb-4">
             <label className="mb-1 block text-[15px] font-semibold">
               Description:
