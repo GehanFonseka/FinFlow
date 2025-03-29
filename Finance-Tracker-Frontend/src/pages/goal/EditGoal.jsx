@@ -198,7 +198,6 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                 onChange={handleChange}
                 className="w-[80%] rounded border p-2"
               />
-
               <div>
                 {!isListening.description ? (
                   <button
