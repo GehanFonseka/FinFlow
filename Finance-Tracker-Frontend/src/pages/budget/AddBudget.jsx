@@ -185,6 +185,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                     disabled={activeFieldRef.current}
                   >
                     <StartIcon />
+                    
                   </button>
                 ) : (
                   <button
@@ -207,8 +208,10 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
           >
             Add Budget
           </button>
+
         </div>
       </DialogBody>
+
     </Dialog>
   );
 };
