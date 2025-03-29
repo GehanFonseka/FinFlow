@@ -163,7 +163,6 @@ const Goal = () => {
             Total savings
           </div>
         </div>
-
         <div className="h-auto w-[200px] rounded-lg border-2 border-gray-300 p-4">
           <div className="font-extrabold uppercase">
             Rs.{totalGoal.toFixed(2)}
