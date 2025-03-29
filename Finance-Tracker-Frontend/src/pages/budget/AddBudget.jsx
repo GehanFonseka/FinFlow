@@ -185,8 +185,9 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                     disabled={activeFieldRef.current}
                   >
                     <StartIcon />
-                    
+
                   </button>
+                  
                 ) : (
                   <button
                     onClick={() => stopListening("price")}
