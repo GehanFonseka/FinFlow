@@ -132,6 +132,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
             <label className="mb-1 block text-[15px] font-semibold">
               Budget Name:
             </label>
+            
             <div className="flex gap-4">
               <input
                 type="text"
@@ -193,7 +194,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                   >
                     <StopIcon />
                   </button>
-                  
+
                 )}
               </div>
             </div>
