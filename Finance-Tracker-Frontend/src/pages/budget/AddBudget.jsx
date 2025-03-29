@@ -9,23 +9,21 @@ import "react-toastify/dist/ReactToastify.css";
 const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
   const { user } = useStateContext();
 
-
   const userId = user.id;
   const [formData, setFormData] = useState({
     budgetName: "",
     price: "",
     userId: userId,
-
   });
+
   const [isListening, setIsListening] = useState({
     budgetName: false,
     price: false,
-
   });
+
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
-  const activeFieldRef = useRef(null);
-  
+  const activeFieldRef = useRef(null); 
 
   if (!recognitionRef.current && "webkitSpeechRecognition" in window) {
     recognitionRef.current = new window.webkitSpeechRecognition();
@@ -46,6 +44,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
         }
         setFormData((prev) => ({ ...prev, [field]: transcript }));
       };
+
       recognitionRef.current.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
         stopListening(field);
@@ -60,6 +59,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       activeFieldRef.current = null; // Unlock field
     }
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -101,6 +101,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       toast.error("Failed to add budget. Please try again.");
     }
   };
+
   const handleClose = () => {
     setFormData({ budgetName: "", price: "", userId: userId });
     setErrors({});
@@ -112,8 +113,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       size="xs"
       open={isOpen}
       handler={handleClose}
-      className="overflow-scroll rounded-[10px] bg-white font-inter shadow-none scrollbar-hide"
-    >
+      className="overflow-scroll rounded-[10px] bg-white font-inter shadow-none scrollbar-hide">
       <DialogHeader className="align-center flex justify-between border-b border-[#ececec] pb-3">
         <div className="align-center flex">
           <div>
@@ -122,9 +122,11 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
             </p>
           </div>
         </div>
+
         <div onClick={handleClose} className="cursor-pointer">
           <CloseIcon />
         </div>
+        
       </DialogHeader>
       <DialogBody className="p-5">
         <div className="flex flex-col p-4 text-gray-800">
@@ -132,6 +134,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
             <label className="mb-1 block text-[15px] font-semibold">
               Budget Name:
             </label>
+
             <div className="flex gap-4">
               <input
                 type="text"
@@ -193,6 +196,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                   >
                     <StopIcon />
                   </button>
+
                 )}
               </div>
             </div>
