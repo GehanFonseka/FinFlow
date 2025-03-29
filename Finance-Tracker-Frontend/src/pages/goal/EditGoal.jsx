@@ -178,7 +178,6 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                   </button>
                 )}
               </div>
-
             </div>
             {errors.title && (
               <p className="text-sm text-red-500">{errors.title}</p>
