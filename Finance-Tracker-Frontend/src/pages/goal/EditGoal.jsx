@@ -189,7 +189,7 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
             <label className="mb-1 block text-[15px] font-semibold">
               Description:
             </label>
-            
+
             <div className="flex gap-4">
               <input
                 type="text"
@@ -198,6 +198,7 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                 onChange={handleChange}
                 className="w-[80%] rounded border p-2"
               />
+              
               <div>
                 {!isListening.description ? (
                   <button
