@@ -187,13 +187,14 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                     <StartIcon />
 
                   </button>
-                  
+
                 ) : (
                   <button
                     onClick={() => stopListening("price")}
                     className="ml-2 rounded-full bg-red-500 px-2 py-2 text-white"
                   >
                     <StopIcon />
+                    
                   </button>
                 )}
               </div>
