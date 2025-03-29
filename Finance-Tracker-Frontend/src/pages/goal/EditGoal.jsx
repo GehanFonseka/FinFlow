@@ -198,7 +198,7 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                 onChange={handleChange}
                 className="w-[80%] rounded border p-2"
               />
-              
+
               <div>
                 {!isListening.description ? (
                   <button
@@ -217,6 +217,7 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                   </button>
                 )}
               </div>
+              
             </div>
             {errors.description && (
               <p className="text-sm text-red-500">{errors.description}</p>
