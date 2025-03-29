@@ -197,6 +197,7 @@ const Goal = () => {
             </tr>
           </thead>
           <tbody>
+            
             {filteredGoal.length > 0 ? (
               filteredGoal.map((item) => {
                 const percentage = Math.min(
