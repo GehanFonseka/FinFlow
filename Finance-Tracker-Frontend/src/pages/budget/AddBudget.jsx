@@ -101,7 +101,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       toast.error("Failed to add budget. Please try again.");
     }
   };
-  
+
   const handleClose = () => {
     setFormData({ budgetName: "", price: "", userId: userId });
     setErrors({});
@@ -113,8 +113,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       size="xs"
       open={isOpen}
       handler={handleClose}
-      className="overflow-scroll rounded-[10px] bg-white font-inter shadow-none scrollbar-hide"
-    >
+      className="overflow-scroll rounded-[10px] bg-white font-inter shadow-none scrollbar-hide">
       <DialogHeader className="align-center flex justify-between border-b border-[#ececec] pb-3">
         <div className="align-center flex">
           <div>
