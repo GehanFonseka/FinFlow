@@ -178,16 +178,18 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                   </button>
                 )}
               </div>
-              
+
             </div>
             {errors.title && (
               <p className="text-sm text-red-500">{errors.title}</p>
             )}
           </div>
+
           <div className="mb-4">
             <label className="mb-1 block text-[15px] font-semibold">
               Description:
             </label>
+            
             <div className="flex gap-4">
               <input
                 type="text"
