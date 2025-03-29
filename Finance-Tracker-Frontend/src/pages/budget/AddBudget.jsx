@@ -193,6 +193,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                   >
                     <StopIcon />
                   </button>
+                  
                 )}
               </div>
             </div>
