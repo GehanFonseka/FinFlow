@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
   const { user } = useStateContext();
 
-
   const userId = user.id;
   const [formData, setFormData] = useState({
     budgetName: "",
@@ -38,6 +37,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       activeFieldRef.current = field;
       setIsListening((prev) => ({ ...prev, [field]: true }));
       recognitionRef.current.start();
+      
       recognitionRef.current.onresult = (event) => {
         let transcript = "";
         for (let i = 0; i < event.results.length; i++) {
