@@ -21,11 +21,10 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
     budgetName: false,
     price: false,
   });
-  
+
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
-  const activeFieldRef = useRef(null);
-  
+  const activeFieldRef = useRef(null); 
 
   if (!recognitionRef.current && "webkitSpeechRecognition" in window) {
     recognitionRef.current = new window.webkitSpeechRecognition();
