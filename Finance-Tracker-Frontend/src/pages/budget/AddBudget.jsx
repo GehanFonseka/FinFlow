@@ -122,6 +122,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
             </p>
           </div>
         </div>
+        
         <div onClick={handleClose} className="cursor-pointer">
           <CloseIcon />
         </div>
