@@ -59,6 +59,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       activeFieldRef.current = null; // Unlock field
     }
   };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
