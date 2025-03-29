@@ -16,11 +16,10 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
     price: "",
     userId: userId,
   });
-  
+
   const [isListening, setIsListening] = useState({
     budgetName: false,
     price: false,
-
   });
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
