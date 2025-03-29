@@ -37,7 +37,6 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       activeFieldRef.current = field;
       setIsListening((prev) => ({ ...prev, [field]: true }));
       recognitionRef.current.start();
-      
       recognitionRef.current.onresult = (event) => {
         let transcript = "";
         for (let i = 0; i < event.results.length; i++) {
@@ -45,6 +44,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
         }
         setFormData((prev) => ({ ...prev, [field]: transcript }));
       };
+
       recognitionRef.current.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
         stopListening(field);
