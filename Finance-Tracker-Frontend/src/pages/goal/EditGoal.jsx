@@ -189,7 +189,6 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
             <label className="mb-1 block text-[15px] font-semibold">
               Description:
             </label>
-
             <div className="flex gap-4">
               <input
                 type="text"
