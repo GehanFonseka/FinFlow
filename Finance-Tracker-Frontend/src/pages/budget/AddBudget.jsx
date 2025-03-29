@@ -59,7 +59,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       activeFieldRef.current = null; // Unlock field
     }
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -101,6 +101,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
       toast.error("Failed to add budget. Please try again.");
     }
   };
+  
   const handleClose = () => {
     setFormData({ budgetName: "", price: "", userId: userId });
     setErrors({});
