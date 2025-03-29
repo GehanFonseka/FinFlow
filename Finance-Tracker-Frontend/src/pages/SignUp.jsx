@@ -6,7 +6,6 @@ import {
   Typography,
   Input,
   Button,
-
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -19,44 +18,62 @@ export const SignUp = () => {
     password: "",
   });
 
-
   const [formErrors, setFormErrors] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  const navigate = useNavigate();
+
+  // Regex Patterns
+  const nameRegex = /^[a-zA-Z\s]{3,}$/; // Only letters & spaces, min 3 chars
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Standard email validation
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; // Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+
+  const validateField = (name, value) => {
+    if (value.trim() === "") return `${name.replace("_", " ")} is required`;
+
+    switch (name) {
+      case "name":
+        return nameRegex.test(value)
+          ? ""
+          : "Name must be at least 3 letters & contain only alphabets";
+      case "email":
+        return emailRegex.test(value) ? "" : "Enter a valid email address";
+      case "password":
+        return passwordRegex.test(value)
+          ? ""
+          : "Password must be 8+ chars, with uppercase, lowercase, number & special char";
+      default:
+        return "";
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
 
-
-    // Reset error message when user starts typing
     setFormErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: "",
+      [name]: validateField(name, value),
     }));
   };
-  
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for empty fields
+    // Validate all fields before submitting
     const newFormErrors = {};
     Object.entries(formData).forEach(([key, value]) => {
-      if (value.trim() === "") {
-        newFormErrors[key] = `${key.replace("_", " ")} is required`;
-      }
+      newFormErrors[key] = validateField(key, value);
     });
 
-    if (Object.keys(newFormErrors).length > 0) {
+    if (Object.values(newFormErrors).some((error) => error !== "")) {
       setFormErrors(newFormErrors);
       return;
     }
@@ -76,18 +93,17 @@ export const SignUp = () => {
           email: "",
           password: "",
         });
-        
       } else {
         Swal.fire({
           title: "Error",
           text: "Registration failed",
-          icon: "error"
+          icon: "error",
         });
       }
     } catch (error) {
       Swal.fire({
         title: "Error",
-        text: "Error registering user",
+        text: error.response?.data?.message || "Error registering user",
         icon: "error",
       });
     }
@@ -156,7 +172,12 @@ export const SignUp = () => {
         </CardBody>
 
         <CardFooter className="pt-0">
-          <Button className="bg-[#25C935]" fullWidth onClick={handleSubmit}>
+          <Button
+            className="bg-[#25C935]"
+            fullWidth
+            onClick={handleSubmit}
+            disabled={Object.values(formErrors).some((error) => error !== "")}
+          >
             Sign Up
           </Button>
 
