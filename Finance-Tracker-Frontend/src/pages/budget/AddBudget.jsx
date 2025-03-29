@@ -122,10 +122,11 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
             </p>
           </div>
         </div>
-        
+
         <div onClick={handleClose} className="cursor-pointer">
           <CloseIcon />
         </div>
+        
       </DialogHeader>
       <DialogBody className="p-5">
         <div className="flex flex-col p-4 text-gray-800">
