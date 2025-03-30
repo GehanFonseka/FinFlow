@@ -21,6 +21,7 @@ const MonthlyExpenseReport = ({ data, date }) => {
     content: () => componentRef.current,
     documentTitle: "Print Preview",
   });
+  
 
   const totalExpense = data.reduce((sum, item) => sum + (item.amount || 0), 0);
   return (
