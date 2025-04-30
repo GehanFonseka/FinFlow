@@ -70,12 +70,13 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
       toast.error("Failed to fetch budgets");
     }
   };
-  
+
 
   useEffect(() => {
     fetchBudget();
   }, [userId]);
 
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
