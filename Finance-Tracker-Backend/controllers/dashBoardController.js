@@ -57,6 +57,7 @@ exports.getData = async (req, res) => {
       allExpenses,
       pendingGoals,
       completeGoals,
+      
     });
   } catch (err) {
     console.error("Get Budgets Error:", err);
