@@ -70,6 +70,7 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
       toast.error("Failed to fetch budgets");
     }
   };
+  
 
   useEffect(() => {
     fetchBudget();
@@ -86,7 +87,7 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
       [name]: "",
     }));
   };
-  
+
 
   const handleSubmit = async () => {
     const newErrors = {};
