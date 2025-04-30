@@ -60,6 +60,7 @@ const Expense = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  
 
   useEffect(() => {
     const filtered = expense.filter((expense) => {
