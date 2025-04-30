@@ -112,6 +112,7 @@ const Report = () => {
             saving={data.summary[0].totalSaving} date={date}
           />
         )}
+        
         {activeTab === "goal" && (
           <GoalReport date={date}
             data={data.goals}
@@ -119,6 +120,7 @@ const Report = () => {
           />
         )}
       </div>
+
     </div>
   );
 };
