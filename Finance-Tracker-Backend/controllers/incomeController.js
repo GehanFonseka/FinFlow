@@ -77,6 +77,8 @@ exports.updateIncome = async (req, res) => {
   }
 };
 
+
+
 exports.deleteIncome = async (req, res) => {
   try {
     const income = await Income.findById(req.params.id);
