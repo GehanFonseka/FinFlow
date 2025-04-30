@@ -147,6 +147,7 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     }
   };
 
+  
   const handleClose = () => {
     setFormData({
       title: "",
