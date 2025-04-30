@@ -38,7 +38,7 @@ const Expense = () => {
     fetchExpense();
   }, [userId]);
 
-  
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
 
@@ -58,6 +58,7 @@ const Expense = () => {
     setSelectedExpenseId(null);
   };
 
+  
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
