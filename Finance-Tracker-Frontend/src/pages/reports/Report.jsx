@@ -111,6 +111,7 @@ const Report = () => {
             data={data.budgetsWithUsedAmount}
             saving={data.summary[0].totalSaving} date={date}
           />
+          
         )}
         
         {activeTab === "goal" && (
@@ -119,6 +120,7 @@ const Report = () => {
             saving={data.summary[0].totalSaving}
           />
         )}
+
       </div>
 
     </div>
