@@ -6,7 +6,6 @@ import { useStateContext } from "../../contexts/NavigationContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const AddGoal = ({ isOpen, onClose, fetchGoal }) => {
   const { user } = useStateContext();
   const userId = user.id;
@@ -21,9 +20,8 @@ const AddGoal = ({ isOpen, onClose, fetchGoal }) => {
     title: false,
     description: false,
     amount: false,
-
   });
-  
+
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);
@@ -77,16 +75,29 @@ const AddGoal = ({ isOpen, onClose, fetchGoal }) => {
   const handleSubmit = async () => {
     const newErrors = {};
 
-    if (!formData.title) {
+    // Validate Goal Title
+    if (!formData.title.trim()) {
       newErrors.title = "Goal Title is required";
+    } else if (formData.title.trim().length < 3) {
+      newErrors.title = "Goal Title must be at least 3 characters long";
+    }  else if (/^[^a-zA-Z]/.test(formData.title.trim())) {
+      newErrors.title = "Goal Title must not start with a number or special character";
     }
-    if (!formData.description) {
+
+    // Validate Description
+    if (!formData.description.trim()) {
       newErrors.description = "Description is required";
+    } else if (formData.description.trim().length < 5) {
+      newErrors.description = "Description must be at least 5 characters long";
     }
+
+    // Validate Amount
     if (!formData.amount) {
       newErrors.amount = "Amount is required";
-    } else if (isNaN(formData.amount) || Number(formData.amount) <= 0) {
-      newErrors.amount = "Enter a valid amount";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(formData.amount)) {
+      newErrors.amount = "Enter a valid amount ";
+    } else if (Number(formData.amount) <= 0) {
+      newErrors.amount = "Amount must be greater than zero";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -96,7 +107,7 @@ const AddGoal = ({ isOpen, onClose, fetchGoal }) => {
 
     try {
       await axiosClient.post("/goal", formData, {
-        headers: { 'x-auth-token': localStorage.getItem('token') },
+        headers: { "x-auth-token": localStorage.getItem("token") },
       });
       toast.success("Goal added successfully!");
       setFormData({ title: "", description: "", amount: "", userId: userId });

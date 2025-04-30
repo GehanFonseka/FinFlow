@@ -22,11 +22,9 @@ const EditIncome = ({ isOpen, onClose, fetchIncome, selectedIncomeId }) => {
 
   useEffect(() => {
     if (selectedIncomeId && isOpen) {
-      console.log("Fetching income for ID:", selectedIncomeId);
       axiosClient
         .get(`/income/${selectedIncomeId}`)
         .then((res) => {
-          console.log("Income data fetched:", res.data);
           setEditedIncome({
             title: res.data.title || "",
             description: res.data.description || "",
@@ -87,15 +85,31 @@ const EditIncome = ({ isOpen, onClose, fetchIncome, selectedIncomeId }) => {
   };
 
   const handleSubmit = async () => {
-    console.log("Update button clicked for Income ID:", selectedIncomeId);
     const newErrors = {};
 
-    if (!editedIncome.title) newErrors.title = "Income Title is required";
-    if (!editedIncome.description) newErrors.description = "Description is required";
+    // Validate Income Title
+    if (!editedIncome.title.trim()) {
+      newErrors.title = "Income Title is required";
+    } else if (editedIncome.title.trim().length < 3) {
+      newErrors.title = "Income Title must be at least 3 characters long";
+    } else if (/^[^a-zA-Z]/.test(editedIncome.title.trim())) {
+      newErrors.title = "Income Title must not start with a number or special character";
+    }
+
+    // Validate Description
+    if (!editedIncome.description.trim()) {
+      newErrors.description = "Description is required";
+    } else if (editedIncome.description.trim().length < 5) {
+      newErrors.description = "Description must be at least 5 characters long";
+    }
+
+    // Validate Amount
     if (!editedIncome.amount) {
       newErrors.amount = "Amount is required";
-    } else if (isNaN(editedIncome.amount) || Number(editedIncome.amount) <= 0) {
-      newErrors.amount = "Enter a valid amount";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(editedIncome.amount)) {
+      newErrors.amount = "Enter a valid amount ";
+    } else if (Number(editedIncome.amount) <= 0) {
+      newErrors.amount = "Amount must be greater than zero";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -104,10 +118,8 @@ const EditIncome = ({ isOpen, onClose, fetchIncome, selectedIncomeId }) => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      console.log("Token for PUT:", token);
       await axiosClient.put(`/income/${selectedIncomeId}`, editedIncome, {
-        headers: { 'x-auth-token': token },
+        headers: { "x-auth-token": localStorage.getItem("token") },
       });
       toast.success("Income updated successfully");
       fetchIncome();

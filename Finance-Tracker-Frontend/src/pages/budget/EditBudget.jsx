@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { CloseIcon, StartIcon, StopIcon } from "../../utils/icons";
 import { Dialog, DialogHeader, DialogBody } from "@material-tailwind/react";
 import axiosClient from "../../../axios-client";
-import { useStateContext } from "../../contexts/NavigationContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,8 +15,8 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);
-  useEffect(() => {
 
+  useEffect(() => {
     if (selectedBudgetId) {
       axiosClient
         .get(`/budget/${selectedBudgetId}`)
@@ -30,7 +29,6 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
         });
     }
   }, [selectedBudgetId]);
-  
 
   if (!recognitionRef.current && "webkitSpeechRecognition" in window) {
     recognitionRef.current = new window.webkitSpeechRecognition();
@@ -81,14 +79,22 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
   const handleSubmit = async () => {
     const newErrors = {};
 
-    if (!editedBudget.budgetName) {
+    // Validate Budget Name
+    if (!editedBudget.budgetName.trim()) {
       newErrors.budgetName = "Budget Name is required";
+    } else if (editedBudget.budgetName.trim().length < 3) {
+      newErrors.budgetName = "Budget Name must be at least 3 characters long";
+    } else if (/^[^a-zA-Z]/.test(editedBudget.budgetName.trim())) {
+      newErrors.budgetName = "Budget Name must not start with a number or special character";
     }
 
+    // Validate Price
     if (!editedBudget.price) {
       newErrors.price = "Price is required";
-    } else if (isNaN(editedBudget.price) || Number(editedBudget.price) <= 0) {
-      newErrors.price = "Enter a valid price";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(editedBudget.price)) {
+      newErrors.price = "Enter a valid price ";
+    } else if (Number(editedBudget.price) <= 0) {
+      newErrors.price = "Price must be greater than zero";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -97,21 +103,25 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
     }
 
     try {
-      await axiosClient.put(`/budget/${selectedBudgetId}`, editedBudget);
+      await axiosClient.put(`/budget/${selectedBudgetId}`, {
+        ...editedBudget,
+        budgetName: editedBudget.budgetName.trim(), // Trim spaces before submission
+      });
       toast.success("Budget edited successfully!");
       fetchBudget();
       handleClose();
     } catch (error) {
       console.error("Error saving data:", error);
-      toast.error("Failed to add budget. Please try again.");
+      toast.error("Failed to edit budget. Please try again.");
     }
   };
 
   const handleClose = () => {
-    // setFormData({ budgetName: "", price: "", userId: userId });
-    // setErrors({});
+    setEditedBudget({});
+    setErrors({});
     onClose();
   };
+
   return (
     <Dialog
       size="xs"
@@ -141,7 +151,7 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
               <input
                 type="text"
                 name="budgetName"
-                value={editedBudget.budgetName}
+                value={editedBudget.budgetName || ""}
                 onChange={handleChange}
                 className="w-[80%] rounded border p-2"
               />
@@ -178,7 +188,7 @@ const EditBudget = ({ isOpen, onClose, fetchBudget, selectedBudgetId }) => {
               <input
                 type="text"
                 name="price"
-                value={editedBudget.price}
+                value={editedBudget.price || ""}
                 onChange={handleChange}
                 className="w-[80%] rounded border p-2"
               />

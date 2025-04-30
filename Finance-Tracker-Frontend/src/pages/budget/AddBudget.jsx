@@ -23,7 +23,7 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
 
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
-  const activeFieldRef = useRef(null); 
+  const activeFieldRef = useRef(null);
 
   if (!recognitionRef.current && "webkitSpeechRecognition" in window) {
     recognitionRef.current = new window.webkitSpeechRecognition();
@@ -75,14 +75,22 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
   const handleSubmit = async () => {
     const newErrors = {};
 
-    if (!formData.budgetName) {
+    // Validate Budget Name
+    if (!formData.budgetName.trim()) {
       newErrors.budgetName = "Budget Name is required";
+    } else if (formData.budgetName.trim().length < 3) {
+      newErrors.budgetName = "Budget Name must be at least 3 characters long";
+    } else if (/^[^a-zA-Z]/.test(formData.budgetName.trim())) {
+      newErrors.budgetName = "Budget Name must not start with a number or special character";
     }
 
+    // Validate Price
     if (!formData.price) {
       newErrors.price = "Price is required";
-    } else if (isNaN(formData.price) || Number(formData.price) <= 0) {
-      newErrors.price = "Enter a valid price";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(formData.price)) {
+      newErrors.price = "Enter a valid price ";
+    } else if (Number(formData.price) <= 0) {
+      newErrors.price = "Price must be greater than zero";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -91,7 +99,10 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
     }
 
     try {
-      await axiosClient.post("/budget", formData);
+      await axiosClient.post("/budget", {
+        ...formData,
+        budgetName: formData.budgetName.trim(), // Trim spaces before submission
+      });
       toast.success("Budget added successfully!");
       setFormData({ budgetName: "", price: "", userId: userId });
       fetchBudget();
@@ -126,7 +137,6 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
         <div onClick={handleClose} className="cursor-pointer">
           <CloseIcon />
         </div>
-        
       </DialogHeader>
       <DialogBody className="p-5">
         <div className="flex flex-col p-4 text-gray-800">
@@ -196,7 +206,6 @@ const AddBudget = ({ isOpen, onClose, fetchBudget }) => {
                   >
                     <StopIcon />
                   </button>
-
                 )}
               </div>
             </div>
