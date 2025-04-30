@@ -7,6 +7,8 @@ const Goal = require("../models/goalModel");
 exports.getData = async (req, res) => {
   const { userId } = req.params;
 
+
+  
   try {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
