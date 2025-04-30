@@ -108,7 +108,7 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
   const handleSubmit = async () => {
     const newErrors = {};
 
-    
+
     // Validate Expense Title
     if (!editedExpense.title.trim()) {
       newErrors.title = "Expense Title is required";
@@ -157,6 +157,7 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
       );
     }
   };
+  
 
   const handleClose = () => {
     setEditedExpense({ title: "", description: "", amount: "", budgetId: "" });
