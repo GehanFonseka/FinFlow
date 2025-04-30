@@ -42,10 +42,6 @@
 **Database:**
 - MongoDB
 
-**APIs:**
-- RESTful APIs
-- OpenAI GPT API
-
 **Tools:**
 - Postman (API testing)
 - Azure Boards (task management)
