@@ -1,14 +1,14 @@
-
 # Node.js dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-sonar-project.properties
+
 # SonarQube files
 .sonar/
 .sonarlint/
-
+.scannerwork/
+sonar-project.properties
 
 # Logs
 logs/
