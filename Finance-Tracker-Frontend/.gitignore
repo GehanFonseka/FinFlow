@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# SonarQube files
+.sonar/
+.sonarlint/
+.scannerwork/
+sonar-project.properties
