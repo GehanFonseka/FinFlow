@@ -108,6 +108,7 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
   const handleSubmit = async () => {
     const newErrors = {};
 
+    
     // Validate Expense Title
     if (!editedExpense.title.trim()) {
       newErrors.title = "Expense Title is required";
@@ -116,7 +117,7 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
     }  else if (/^[^a-zA-Z]/.test(editedExpense.title.trim())) {
       newErrors.title = "Expense Title must not start with a number or special character";
     }
-    
+
 
     // Validate Description
     if (!editedExpense.description.trim()) {
