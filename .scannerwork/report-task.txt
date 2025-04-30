@@ -1,0 +1,6 @@
+projectKey=fnflow_project
+serverUrl=http://localhost:9000
+serverVersion=25.4.0.105899
+dashboardUrl=http://localhost:9000/dashboard?id=fnflow_project
+ceTaskId=3d18a145-8028-46b4-905c-59b24425a830
+ceTaskUrl=http://localhost:9000/api/ce/task?id=3d18a145-8028-46b4-905c-59b24425a830
