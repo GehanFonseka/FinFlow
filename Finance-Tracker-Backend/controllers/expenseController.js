@@ -2,6 +2,7 @@ const Expense = require("../models/expenseModel");
 const Budget = require("../models/budgetModel");
 const Wallet = require("../models/WalletModel");
 
+
 exports.createExpense = async (req, res) => {
   const { title, description, amount, userId, budgetId } = req.body;
   try {
@@ -12,9 +13,11 @@ exports.createExpense = async (req, res) => {
       await wallet.save();
     }
 
+
     const newTotalSaving = parseFloat(wallet.totalSaving) - parseFloat(amount);
     wallet.totalSaving = newTotalSaving.toString();
     await wallet.save();
+
 
     const expense = new Expense({
       userId: userId,
@@ -22,6 +25,7 @@ exports.createExpense = async (req, res) => {
       description,
       amount,
       budgetId,
+      
     });
     await expense.save();
     res.status(201).json(expense);

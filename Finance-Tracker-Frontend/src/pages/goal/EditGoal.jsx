@@ -157,6 +157,7 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
           <CloseIcon />
         </div>
       </DialogHeader>
+
       <DialogBody className="p-5">
         <div className="flex flex-col p-4 text-gray-800">
           <div className="mb-4">
@@ -223,7 +224,7 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
                     <StopIcon />
                   </button>
                 )}
-              </div>
+              </div>   
             </div>
             {errors.description && (
               <p className="text-sm text-red-500">{errors.description}</p>

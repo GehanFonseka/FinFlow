@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { Link, Outlet, Navigate, useLocation } from "react-router-dom";
 import { Burger } from "../../utils/icons";
 import { SideBar } from "./SideBar";
 import { Card, Tooltip, IconButton } from "@material-tailwind/react";
-import { BellIcon, UserIcon } from "@heroicons/react/24/solid";
+import { UserIcon } from "@heroicons/react/24/solid";
 import { useStateContext } from "../../contexts/NavigationContext";
 
 export const MainLayout = () => {

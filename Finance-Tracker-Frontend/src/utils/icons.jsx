@@ -1831,3 +1831,4 @@ export const TrackSalesIcon = ({ color }) => (
     />
   </svg>
 );
+
