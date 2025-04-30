@@ -76,7 +76,7 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     fetchBudget();
   }, [userId]);
 
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -109,6 +109,7 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
       newErrors.description = "Description must be at least 5 characters long";
     }
 
+    
     // Validate Amount
     if (!formData.amount) {
       newErrors.amount = "Amount is required";
