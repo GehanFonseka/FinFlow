@@ -58,7 +58,7 @@ const Expense = () => {
     setSelectedExpenseId(null);
   };
 
-  
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -78,6 +78,7 @@ const Expense = () => {
     });
     setFilteredExpense(filtered);
   }, [searchQuery, expense]);
+
 
   const handleDelete = async (id) => {
     console.log("Delete button clicked for Expense ID:", id);
@@ -107,6 +108,7 @@ const Expense = () => {
     }
   };
 
+  
   const totalExpense = expense.reduce(
     (sum, item) => sum + (item.amount || 0),
     0,
