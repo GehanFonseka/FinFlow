@@ -102,16 +102,18 @@ const Report = () => {
             data={data.incomes}
              date={date}
           />}
-          
+
         {activeTab === "expense" && <MonthlyExpenseReport
             data={data.expenses}
             s date={date}
+
           />}
 
         {activeTab === "budget" && (
           <MonthlyBudgetReport
             data={data.budgetsWithUsedAmount}
             saving={data.summary[0].totalSaving} date={date}
+            
           />
 
         )}
