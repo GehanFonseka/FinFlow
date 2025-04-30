@@ -28,25 +28,10 @@
 
 ## 🛠️ Tech Stack
 
-**Frontend:**
-- React.js
-- Web Speech API (for voice input)
-- HTML/CSS
-- JavaScript
-
-**Backend:**
-- Node.js
-- Express.js
-- OpenAI GPT API Integration
-
-**Database:**
-- MongoDB
-
-**Tools:**
-- Postman (API testing)
-- Azure Boards (task management)
-- Selenium
-- SonarQube
+- **Frontend:** React.js, Web Speech API, HTML/CSS, JavaScript  
+- **Backend:** Node.js, Express.js, OpenAI GPT API  
+- **Database:** MongoDB  
+- **Tools:** Postman, Azure Boards, Selenium (Testing), SonarQube (Code Quality)
 
 ---
 
