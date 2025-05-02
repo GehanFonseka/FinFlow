@@ -7,13 +7,15 @@ const Goal = require("../models/goalModel");
 exports.getData = async (req, res) => {
   const { userId } = req.params;
 
-
-  
   try {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
     const wallet = await Wallet.find({ userId });
+
+    if (wallet.length === 0) {
+      console.warn(`No wallet found for userId: ${userId}`);
+    }
 
     const incomes = await Income.find({
       userId,
@@ -33,24 +35,16 @@ exports.getData = async (req, res) => {
       },
     });
 
-    const totalExpense = expenses.reduce(
-      (sum, expense) => sum + expense.amount,
-      0
-    );
+    const totalExpense = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
     const allIncome = await Income.find({ userId });
     const allExpenses = await Expense.find({ userId });
 
-    const pendingGoals = await Goal.find({ userId, status: { $ne: 1 } }).limit(
-      5
-    );
-
-    const completeGoals = await Goal.find({ userId, status: { $ne: 0 } }).limit(
-      5
-    );
+    const pendingGoals = await Goal.find({ userId, status: { $ne: 1 } }).limit(5);
+    const completeGoals = await Goal.find({ userId, status: { $ne: 0 } }).limit(5);
 
     res.status(200).json({
-      totalSaving: wallet[0].totalSaving,
+      totalSaving: wallet.length > 0 ? wallet[0].totalSaving : 0,
       totalIncome,
       totalExpense,
       allIncome,
