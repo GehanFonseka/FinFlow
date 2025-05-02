@@ -102,23 +102,31 @@ const Report = () => {
             data={data.incomes}
              date={date}
           />}
+
         {activeTab === "expense" && <MonthlyExpenseReport
             data={data.expenses}
             s date={date}
+
           />}
+
         {activeTab === "budget" && (
           <MonthlyBudgetReport
             data={data.budgetsWithUsedAmount}
             saving={data.summary[0].totalSaving} date={date}
+            
           />
+
         )}
+        
         {activeTab === "goal" && (
           <GoalReport date={date}
             data={data.goals}
             saving={data.summary[0].totalSaving}
           />
         )}
+
       </div>
+
     </div>
   );
 };

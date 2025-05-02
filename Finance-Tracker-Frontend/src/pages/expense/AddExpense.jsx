@@ -16,16 +16,14 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     amount: "",
     budgetId: "",
     userId: userId,
-
   });
 
   const [isListening, setIsListening] = useState({
     title: false,
     description: false,
     amount: false,
-
   });
-  
+
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);
@@ -73,9 +71,11 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     }
   };
 
+
   useEffect(() => {
     fetchBudget();
   }, [userId]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,21 +89,41 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     }));
   };
 
+
   const handleSubmit = async () => {
     const newErrors = {};
 
-    if (!formData.title) {
+    // Validate Expense Title
+    if (!formData.title.trim()) {
       newErrors.title = "Expense Title is required";
+    } else if (formData.title.trim().length < 3) {
+      newErrors.title = "Expense Title must be at least 3 characters long";
+    } else if (/^[^a-zA-Z]/.test(formData.title.trim())) {
+      newErrors.title = "Expense Title must not start with a number or special character";
     }
-    if (!formData.description) {
+
+    // Validate Description
+    if (!formData.description.trim()) {
       newErrors.description = "Description is required";
+    } else if (formData.description.trim().length < 5) {
+      newErrors.description = "Description must be at least 5 characters long";
     }
+
+    
+    // Validate Amount
     if (!formData.amount) {
       newErrors.amount = "Amount is required";
-    } else if (isNaN(formData.amount) || Number(formData.amount) <= 0) {
-      newErrors.amount = "Enter a valid amount";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(formData.amount)) {
+      newErrors.amount = "Enter a valid amount ";
+    } else if (Number(formData.amount) <= 0) {
+      newErrors.amount = "Amount must be greater than zero";
     }
-    if (!formData.budgetId) newErrors.budgetId = "Please select a budget";
+
+    // Validate Budget Selection
+    if (!formData.budgetId) {
+      newErrors.budgetId = "Please select a budget";
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -127,6 +147,7 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
     }
   };
 
+  
   const handleClose = () => {
     setFormData({
       title: "",
@@ -176,7 +197,6 @@ const AddExpense = ({ isOpen, onClose, fetchExpense }) => {
                   {b.budgetName}
                 </option>
               ))}
-              <option value="0">Other</option>
             </select>
             {errors.budgetId && (
               <p className="text-sm text-red-500">{errors.budgetId}</p>

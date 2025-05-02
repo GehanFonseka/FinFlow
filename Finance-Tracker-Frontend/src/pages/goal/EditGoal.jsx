@@ -17,18 +17,16 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
     description: false,
     amount: false,
   });
-  
+
   const [errors, setErrors] = useState({});
   const recognitionRef = useRef(null);
   const activeFieldRef = useRef(null);
 
   useEffect(() => {
     if (selectedGoalId && isOpen) {
-      console.log("Fetching goal for ID:", selectedGoalId);
       axiosClient
         .get(`/goal/${selectedGoalId}`)
         .then((res) => {
-          console.log("Goal data fetched:", res.data);
           setEditedGoal({
             title: res.data.title || "",
             description: res.data.description || "",
@@ -89,15 +87,31 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
   };
 
   const handleSubmit = async () => {
-    console.log("Update button clicked for Goal ID:", selectedGoalId);
     const newErrors = {};
 
-    if (!editedGoal.title) newErrors.title = "Goal Title is required";
-    if (!editedGoal.description) newErrors.description = "Description is required";
+    // Validate Goal Title
+    if (!editedGoal.title.trim()) {
+      newErrors.title = "Goal Title is required";
+    } else if (editedGoal.title.trim().length < 3) {
+      newErrors.title = "Goal Title must be at least 3 characters long";
+    } else if (/^[^a-zA-Z]/.test(editedGoal.title.trim())) {
+      newErrors.title = "Goal Title must not start with a number or special character";
+    }
+
+    // Validate Description
+    if (!editedGoal.description.trim()) {
+      newErrors.description = "Description is required";
+    } else if (editedGoal.description.trim().length < 5) {
+      newErrors.description = "Description must be at least 5 characters long";
+    }
+
+    // Validate Amount
     if (!editedGoal.amount) {
       newErrors.amount = "Amount is required";
-    } else if (isNaN(editedGoal.amount) || Number(editedGoal.amount) <= 0) {
+    } else if (!/^\d+(\.\d{1,2})?$/.test(editedGoal.amount)) {
       newErrors.amount = "Enter a valid amount";
+    } else if (Number(editedGoal.amount) <= 0) {
+      newErrors.amount = "Amount must be greater than zero";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -106,17 +120,15 @@ const EditGoal = ({ isOpen, onClose, fetchGoal, selectedGoalId }) => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      console.log("Token for PUT:", token);
       await axiosClient.put(`/goal/${selectedGoalId}`, editedGoal, {
-        headers: { 'x-auth-token': token },
+        headers: { "x-auth-token": localStorage.getItem("token") },
       });
       toast.success("Goal updated successfully");
       fetchGoal();
       handleClose();
     } catch (error) {
       console.error("Update Error:", error.response?.data || error.message);
-      toast.error(`Failed to update income: ${error.response?.data.message || error.message}`);
+      toast.error(`Failed to update goal: ${error.response?.data.message || error.message}`);
     }
   };
 

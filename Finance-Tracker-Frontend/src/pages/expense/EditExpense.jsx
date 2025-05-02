@@ -13,7 +13,6 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
     description: "",
     budgetId: "",
     amount: "",
-
   });
 
   const userId = user.id;
@@ -21,9 +20,8 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
     title: false,
     description: false,
     amount: false,
-
   });
-  
+
   const [errors, setErrors] = useState({});
   const [budget, setBudget] = useState([]);
   const recognitionRef = useRef(null);
@@ -34,7 +32,6 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
       axiosClient
         .get(`/expense/${selectedExpenseId}`)
         .then((res) => {
-          console.log("Expense data fetched:", res.data);
           setEditedExpense({
             title: res.data.title || "",
             description: res.data.description || "",
@@ -43,10 +40,7 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
           });
         })
         .catch((err) => {
-          console.error(
-            "Fetch Expense Error:",
-            err.response?.data || err.message,
-          );
+          console.error("Fetch Expense Error:", err.response?.data || err.message);
           toast.error("Failed to load expense details");
         });
     }
@@ -101,7 +95,6 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Field: ${name}, Value: ${value}`);
     setEditedExpense((prev) => ({
       ...prev,
       [name]: value,
@@ -113,20 +106,38 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
   };
 
   const handleSubmit = async () => {
-    console.log("Update button clicked for Expense ID:", selectedExpenseId);
     const newErrors = {};
 
-    if (!editedExpense.title) newErrors.title = "Expense Title is required";
-    if (!editedExpense.description)
+
+    // Validate Expense Title
+    if (!editedExpense.title.trim()) {
+      newErrors.title = "Expense Title is required";
+    } else if (editedExpense.title.trim().length < 3) {
+      newErrors.title = "Expense Title must be at least 3 characters long";
+    }  else if (/^[^a-zA-Z]/.test(editedExpense.title.trim())) {
+      newErrors.title = "Expense Title must not start with a number or special character";
+    }
+
+
+    // Validate Description
+    if (!editedExpense.description.trim()) {
       newErrors.description = "Description is required";
-    if (!editedExpense.budgetId) newErrors.budgetId = "Please select a budget";
+    } else if (editedExpense.description.trim().length < 5) {
+      newErrors.description = "Description must be at least 5 characters long";
+    }
+
+    // Validate Amount
     if (!editedExpense.amount) {
       newErrors.amount = "Amount is required";
-    } else if (
-      isNaN(editedExpense.amount) ||
-      Number(editedExpense.amount) <= 0
-    ) {
-      newErrors.amount = "Enter a valid amount";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(editedExpense.amount)) {
+      newErrors.amount = "Enter a valid amount ";
+    } else if (Number(editedExpense.amount) <= 0) {
+      newErrors.amount = "Amount must be greater than zero";
+    }
+
+    // Validate Budget Selection
+    if (!editedExpense.budgetId) {
+      newErrors.budgetId = "Please select a budget";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -135,8 +146,6 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      console.log("Token for PUT:", token);
       await axiosClient.put(`/expense/${selectedExpenseId}`, editedExpense);
       toast.success("Expense updated successfully");
       fetchExpense();
@@ -144,13 +153,14 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
     } catch (error) {
       console.error("Update Error:", error.response?.data || error.message);
       toast.error(
-        `Failed to update expense: ${error.response?.data.message || error.message}`,
+        `Failed to update expense: ${error.response?.data.message || error.message}`
       );
     }
   };
+  
 
   const handleClose = () => {
-    setEditedExpense({ title: "", description: "", amount: "" });
+    setEditedExpense({ title: "", description: "", amount: "", budgetId: "" });
     setErrors({});
     onClose();
   };
@@ -192,9 +202,7 @@ const EditExpense = ({ isOpen, onClose, fetchExpense, selectedExpenseId }) => {
                   {b.budgetName}
                 </option>
               ))}
-              <option value="0">Other</option>
             </select>
-
             {errors.budgetId && (
               <p className="text-sm text-red-500">{errors.budgetId}</p>
             )}
