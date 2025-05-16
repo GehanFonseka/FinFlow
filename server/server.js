@@ -32,3 +32,16 @@ app.use("/api/advice", adviceRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+const path = require('path');
+const express = require('express');
+
+
+// Serve static files from the 'dist' folder
+app.use(express.static(path.join(__dirname, 'client/dist')));
+
+// Redirect all other routes to React's index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
+});
+
