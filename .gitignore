@@ -10,6 +10,12 @@ yarn-error.log*
 .scannerwork/
 sonar-project.properties
 
+# VS Code settings
+.vscode/
+.sonar/
+.scannerwork/
+
+
 # Logs
 logs/
 *.log
