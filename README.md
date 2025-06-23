@@ -2,6 +2,8 @@
 
 **FinFlow** is an intelligent personal finance management system that empowers users to track income, manage expenses, plan budgets, and achieve savings goals — now enhanced with **voice commands** and **AI-powered financial advice** via OpenAI's ChatGPT.
 
+🔗 **Live Site:** [https://finflow.publicvm.com](https://finflow.publicvm.com)
+
 ---
 
 ## 🚀 Key Features
