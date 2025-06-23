@@ -6,6 +6,14 @@
 
 ---
 
+## 👥 Contributors
+| Name                               | Registration Number |Github Username     |
+|------------------------------------|---------------------|--------------------|
+| Gehan Fonseka                      | IT22248794          | GehanFonseka       |
+| Chamudi Himasha                    | IT22226914          | ChamuHimasha       |
+| Kavishka Deshan                    | IT22195616          | deshanMAK          |
+| Sajani Sapurna                     | IT22197832          | sapurna            |
+
 ## 🚀 Key Features
 
 ### 🔊 Voice-Enabled Modules
