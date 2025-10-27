@@ -42,6 +42,37 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
+
+// Add explicit preflight handler for all /api/* routes (helps when a proxy/Azure interferes)
+app.options("/api/*", (req, res) => {
+  const origin = req.headers.origin || "";
+  console.log("[PRE-FLIGHT]", req.method, req.originalUrl, "Origin=", origin);
+
+  // allow requests from configured origins (fall back to first allowed origin for non-browser tools)
+  if (!origin || allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin || allowedOrigins[0]);
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type,Authorization,Accept,Origin,X-Requested-With"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    return res.sendStatus(204);
+  }
+
+  // explicitly deny if origin not allowed
+  console.log("[CORS DENY]", origin);
+  return res.status(403).json({ message: "CORS origin not allowed" });
+});
+
+// small logger to show incoming origin on normal requests too
+app.use((req, res, next) => {
+  if (req.headers.origin) {
+    console.log("[REQ ORIGIN]", req.method, req.originalUrl, "Origin=", req.headers.origin);
+  }
+  next();
+});
+
 app.use(express.json());
 
 /* --------------------------- API ROUTES --------------------------- */
