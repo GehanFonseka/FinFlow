@@ -21,13 +21,13 @@ const express = require("express");
 const cors = require("cors");
 
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "https://witty-island-07d9be700.3.azurestaticapps.net" // your Azure frontend
+  "https://witty-island-07d9be700.3.azurestaticapps.net" // frontend Azure URL
 ];
 
+// CORS configuration
 const corsOptions = {
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow non-browser requests like Postman
     if (allowedOrigins.indexOf(origin) === -1) {
       return callback(new Error("Not allowed by CORS"));
     }
@@ -37,13 +37,12 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"]
 };
 
+// Apply CORS middleware globally
+app.use(cors(corsOptions));
 
-
-// Handle preflight OPTIONS requests globally
+// Handle preflight requests
 app.options("*", cors(corsOptions));
 
-// Apply CORS to all routes
-app.use(cors(corsOptions));
 
 app.use(express.json());
 
