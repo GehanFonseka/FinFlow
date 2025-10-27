@@ -11,23 +11,24 @@ const dashBoardRoutes = require("./routes/dashBoardRoute");
 const reportRoutes = require("./routes/reportRoute");
 const adviceRoutes = require("./routes/adviceRoute");
 const cors = require("cors");
+const path = require('path');
 
 dotenv.config();
 connectDB();
 
 const app = express();
 
-const express = require("express");
-const cors = require("cors");
-
+// Allowed frontend origins (add your actual frontend URL(s) here)
 const allowedOrigins = [
-  "https://witty-island-07d9be700.3.azurestaticapps.net" // frontend Azure URL
+  "https://witty-island-07d9be700.3.azurestaticapps.net", // your static app
+  "http://localhost:5173", // Vite dev server
+  
 ];
 
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow non-browser requests like Postman
+    if (!origin) return callback(null, true); // allow non-browser requests (Postman, server-to-server)
     if (allowedOrigins.indexOf(origin) === -1) {
       return callback(new Error("Not allowed by CORS"));
     }
@@ -37,16 +38,11 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"]
 };
 
-// Apply CORS middleware globally
+// Apply CORS middleware globally and handle preflight
 app.use(cors(corsOptions));
-
-// Handle preflight requests
 app.options("*", cors(corsOptions));
 
-
 app.use(express.json());
-
-
 
 app.use("/api/auth", userRoutes);
 app.use("/api/budget", budgetRoutes);
@@ -61,16 +57,10 @@ app.use("/api/advice", adviceRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-const path = require('path');
-
-
-
-// Serve static files from the 'dist' folder
+// Serve static files from the 'client/dist' folder if present
 app.use(express.static(path.join(__dirname, 'client/dist')));
 
-// Redirect all other routes to React's index.html
 app.get('*', (req, res) => {
-
   res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
 });
 
