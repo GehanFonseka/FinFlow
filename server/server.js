@@ -17,29 +17,33 @@ connectDB();
 
 const app = express();
 
+const express = require("express");
+const cors = require("cors");
+
 const allowedOrigins = [
-  "http://localhost:5173", // for local dev
+  "http://localhost:5173", // local dev
   "https://witty-island-07d9be700.3.azurestaticapps.net" // your Azure frontend
 ];
 
-app.use(cors({
+const corsOptions = {
   origin: function(origin, callback) {
-    // allow requests with no origin (like curl, Postman)
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `CORS policy does not allow access from ${origin}`;
-      return callback(new Error(msg), false);
+      return callback(new Error("Not allowed by CORS"));
     }
     return callback(null, true);
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
 
-// handle OPTIONS preflight requests
-app.options("*", cors());
 
+
+// Handle preflight OPTIONS requests globally
+app.options("*", cors(corsOptions));
+
+// Apply CORS to all routes
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

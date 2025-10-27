@@ -13,7 +13,7 @@ const getFinancialAdvice = async (totalBudget, totalExpense, totalIncome, pendin
       totalRemainingAmount: totalRemainingAmount || 0
     };
 
-    const res = await fetch('http://localhost:5000/api/advice', {
+    const res = await fetch('finflow-rg-ea-ehdgehdpd7axchfn.eastasia-01.azurewebsites.net/api/advice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
