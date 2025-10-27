@@ -18,27 +18,34 @@ connectDB();
 
 const app = express();
 
-// Allowed frontend origins (add your actual frontend URL(s) here)
+/**
+ * Manual CORS middleware (explicitly sets headers and responds to preflight).
+ * Keeps behavior strict in production — change allowedOrigins for your frontend.
+ */
 const allowedOrigins = [
-  "https://witty-island-07d9be700.3.azurestaticapps.net", // your static app
-  "http://localhost:5173", // Vite dev server
-  
+  "https://witty-island-07d9be700.3.azurestaticapps.net",
+  "http://localhost:5173",
+  "http://localhost:3000"
 ];
 
-// CORS configuration
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow non-browser requests (Postman, server-to-server)
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("Not allowed by CORS"));
-    }
-    return callback(null, true);
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-};
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  // You can also set '*' for testing: res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  // Optional: expose auth header to client
+  res.setHeader("Access-Control-Expose-Headers", "Authorization");
 
-// Apply CORS middleware globally and handle preflight
+  if (req.method === "OPTIONS") {
+    // Short-circuit preflight
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
