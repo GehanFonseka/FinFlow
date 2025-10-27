@@ -18,22 +18,35 @@ connectDB();
 
 const app = express();
 
+// ===== EARLY PRE-FLIGHT (handles OPTIONS before anything else) =====
+app.use((req, res, next) => {
+  const origin = req.headers.origin || "";
+  // always reflect origin for browser requests so preflight gets Access-Control-Allow-Origin
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type,Authorization,Accept,Origin,X-Requested-With"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    console.log("[PRE-FLIGHT-RESP]", req.originalUrl, "Origin=", origin);
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 /* --------------------------- CORS CONFIG --------------------------- */
 const allowedOrigins = [
   "https://witty-island-07d9be700.3.azurestaticapps.net", // your frontend
-  "https://finflow-rg-ea-ehdgehdpd7axchfn.eastasia-01.azurewebsites.net", // backend itself
-  "http://localhost:5173", // local dev
-  "http://localhost:3000"
+  "http://localhost:5173",
+  "http://localhost:3000",
+  // you can add other origins here
 ];
 
+// Use origin: true so CORS middleware reflects the request Origin header
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("CORS not allowed from this origin: " + origin));
-    }
-  },
+  origin: true, // reflect requester origin => sets Access-Control-Allow-Origin to request origin
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
   credentials: true,
@@ -42,28 +55,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
-
-// Add explicit preflight handler for all /api/* routes (helps when a proxy/Azure interferes)
-app.options("/api/*", (req, res) => {
-  const origin = req.headers.origin || "";
-  console.log("[PRE-FLIGHT]", req.method, req.originalUrl, "Origin=", origin);
-
-  // allow requests from configured origins (fall back to first allowed origin for non-browser tools)
-  if (!origin || allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin || allowedOrigins[0]);
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type,Authorization,Accept,Origin,X-Requested-With"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    return res.sendStatus(204);
-  }
-
-  // explicitly deny if origin not allowed
-  console.log("[CORS DENY]", origin);
-  return res.status(403).json({ message: "CORS origin not allowed" });
-});
 
 // small logger to show incoming origin on normal requests too
 app.use((req, res, next) => {
