@@ -18,23 +18,28 @@ connectDB();
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173", // Local dev frontend
-  "https://witty-island-07d9be700.3.azurestaticapps.net" // Azure frontend
+  "http://localhost:5173", // for local dev
+  "https://witty-island-07d9be700.3.azurestaticapps.net" // your Azure frontend
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
-    // allow requests with no origin (like mobile apps or curl)
+    // allow requests with no origin (like curl, Postman)
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      const msg = `CORS policy does not allow access from ${origin}`;
       return callback(new Error(msg), false);
     }
     return callback(null, true);
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
+// handle OPTIONS preflight requests
+app.options("*", cors());
+
 
 app.use(express.json());
 

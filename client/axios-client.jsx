@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 const axiosClient = axios.create({
-  baseURL: `https://finflow-backend.azurewebsites.net/api`,
+  baseURL: `https://finflow-rg-ea-ehdgehdpd7axchfn.eastasia-01.azurewebsites.net/api`,
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*", 
