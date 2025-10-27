@@ -23,21 +23,19 @@ const app = express();
  * Keeps behavior strict in production — change allowedOrigins for your frontend.
  */
 const allowedOrigins = [
-  // production frontend (static app)
+  // production frontend
   "https://witty-island-07d9be700.3.azurestaticapps.net",
-  // production backend (if you call backend from other services / same origin)
+  // production backend (if called by other services)
   "https://finflow-rg-ea-ehdgehdpd7axchfn.eastasia-01.azurewebsites.net",
-  // local dev
+  // add local dev origins only if you plan to test from localhost:
   "http://localhost:5173",
-  "http://localhost:3000",
-  "http://127.0.0.1:5173",
-  "http://127.0.0.1:3000",
+  "http://127.0.0.1:5173"
 ];
 
-// --- Replace manual header middleware and current cors usage with this block ---
+// --- CORS config (keeps OPTIONS preflight correct) ---
 const corsOptions = {
   origin: (origin, callback) => {
-    // allow non-browser tools like curl/postman (no origin)
+    // allow non-browser tools (no origin)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
     return callback(new Error("Not allowed by CORS"));
@@ -48,12 +46,9 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
-// Apply CORS globally
 app.use(cors(corsOptions));
-// Ensure preflight requests are handled using same options
 app.options("*", cors(corsOptions));
 
-// Simple request logger to help debug origin issues
 app.use((req, res, next) => {
   if (req.headers.origin) {
     console.log("[REQ ORIGIN]", req.method, req.originalUrl, "Origin=", req.headers.origin);
