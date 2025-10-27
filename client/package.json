@@ -10,7 +10,6 @@
     "preview": "vite preview",
     "start": "vite"
   },
-
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "@material-tailwind/react": "^2.1.4",

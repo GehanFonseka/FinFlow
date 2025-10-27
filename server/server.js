@@ -20,6 +20,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+
 app.use("/api/auth", userRoutes);
 app.use("/api/budget", budgetRoutes);
 app.use("/api/income", incomeRoutes);
