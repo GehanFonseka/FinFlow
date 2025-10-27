@@ -31,13 +31,13 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "http://127.0.0.1:5173",
-  "http://127.0.0.1:3000"
+  "http://127.0.0.1:3000",
 ];
 
-// --- add corsOptions definition (was missing) ---
+// --- Replace manual header middleware and current cors usage with this block ---
 const corsOptions = {
-  origin: function (origin, callback) {
-    // allow non-browser tools (no origin)
+  origin: (origin, callback) => {
+    // allow non-browser tools like curl/postman (no origin)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
     return callback(new Error("Not allowed by CORS"));
@@ -45,52 +45,22 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
   credentials: true,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 204,
 };
-// --- end added block ---
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Expose-Headers", "Authorization");
-
-  if (req.method === "OPTIONS") {
-    // Short-circuit preflight
-    return res.sendStatus(204);
-  }
-  next();
-});
-
-// Apply CORS globally using the configured options
+// Apply CORS globally
 app.use(cors(corsOptions));
+// Ensure preflight requests are handled using same options
+app.options("*", cors(corsOptions));
 
-// Log and short-circuit OPTIONS preflight before other handlers to avoid 404
-app.options('*', (req, res) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.indexOf(origin) !== -1) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Methods', corsOptions.methods.join(','));
-  res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(','));
-  res.header('Access-Control-Allow-Credentials', 'true');
-  // Allow preflight to be cached
-  res.header('Access-Control-Max-Age', '600');
-  // short-circuit
-  return res.sendStatus(204);
-});
-
-// Optional debug: log incoming origins for troubleshooting
+// Simple request logger to help debug origin issues
 app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    console.log('[CORS] Preflight:', req.method, req.originalUrl, 'Origin=', req.headers.origin);
+  if (req.headers.origin) {
+    console.log("[REQ ORIGIN]", req.method, req.originalUrl, "Origin=", req.headers.origin);
   }
   next();
 });
-// (cors middleware already applied above and OPTIONS handled) -- no duplicate application
+// --- end replacement ---
 
 app.use(express.json());
 
