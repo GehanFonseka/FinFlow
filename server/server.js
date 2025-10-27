@@ -23,9 +23,15 @@ const app = express();
  * Keeps behavior strict in production — change allowedOrigins for your frontend.
  */
 const allowedOrigins = [
+  // production frontend (static app)
   "https://witty-island-07d9be700.3.azurestaticapps.net",
+  // production backend (if you call backend from other services / same origin)
+  "https://finflow-rg-ea-ehdgehdpd7axchfn.eastasia-01.azurewebsites.net",
+  // local dev
   "http://localhost:5173",
-  "http://localhost:3000"
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:3000"
 ];
 
 // --- add corsOptions definition (was missing) ---
@@ -37,7 +43,9 @@ const corsOptions = {
     return callback(new Error("Not allowed by CORS"));
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"]
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+  credentials: true,
+  optionsSuccessStatus: 204
 };
 // --- end added block ---
 
@@ -57,13 +65,39 @@ app.use((req, res, next) => {
   next();
 });
 
-// apply the cors middleware using the defined options
+// Apply CORS globally using the configured options
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+
+// Log and short-circuit OPTIONS preflight before other handlers to avoid 404
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.indexOf(origin) !== -1) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Methods', corsOptions.methods.join(','));
+  res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(','));
+  res.header('Access-Control-Allow-Credentials', 'true');
+  // Allow preflight to be cached
+  res.header('Access-Control-Max-Age', '600');
+  // short-circuit
+  return res.sendStatus(204);
+});
+
+// Optional debug: log incoming origins for troubleshooting
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    console.log('[CORS] Preflight:', req.method, req.originalUrl, 'Origin=', req.headers.origin);
+  }
+  next();
+});
+// (cors middleware already applied above and OPTIONS handled) -- no duplicate application
 
 app.use(express.json());
 
-app.use("/api/auth", userRoutes);
+app.use('/api/auth', (req, res, next) => {
+  console.log('[AUTH REQUEST]', req.method, req.originalUrl, 'body=', req.body);
+  next();
+}, userRoutes);
 app.use("/api/budget", budgetRoutes);
 app.use("/api/income", incomeRoutes);
 app.use("/api/expense", expenseRoutes);
@@ -73,13 +107,36 @@ app.use("/api/dashboard", dashBoardRoutes);
 app.use("/api/report", reportRoutes);
 app.use("/api/advice", adviceRoutes);
 
+// -- Add this error handler (logs error and returns a safe JSON) --
+app.use((err, req, res, next) => {
+  console.error("[SERVER ERROR]", err);
+
+  const status = err.status || 500;
+  const message = err.message || "Server error";
+
+  const errorDetail = {};
+  if (process.env.NODE_ENV !== "production") {
+    errorDetail.name = err.name;
+    errorDetail.message = err.message;
+    errorDetail.stack = err.stack;
+    Object.getOwnPropertyNames(err).forEach((k) => {
+      if (!["name", "message", "stack"].includes(k)) {
+        errorDetail[k] = err[k];
+      }
+    });
+  }
+
+  res.status(status).json({ message, error: errorDetail });
+});
+
+// Serve static build only in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/dist", "index.html"));
+  });
+}
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-// Serve static files from the 'client/dist' folder if present
-app.use(express.static(path.join(__dirname, 'client/dist')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
-});
 

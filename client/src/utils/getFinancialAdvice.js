@@ -1,3 +1,5 @@
+import axiosClient from "../../axios-client";
+
 const getFinancialAdvice = async (totalBudget, totalExpense, totalIncome, pendingGoals, budgets, expenses, incomes, totalSaving, totalRemainingAmount) => {
   try {
     // Ensure all values are defined with defaults
@@ -13,18 +15,10 @@ const getFinancialAdvice = async (totalBudget, totalExpense, totalIncome, pendin
       totalRemainingAmount: totalRemainingAmount || 0
     };
 
-    const res = await fetch('https://finflow-rg-ea-ehdgehdpd7axchfn.eastasia-01.azurewebsites.net/api/advice', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    // Use axiosClient so baseURL and CORS settings are respected
+    const res = await axiosClient.post("/advice", payload);
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-
-    const data = await res.json();
-    return data.advice;
+    return res.data?.advice;
   } catch (error) {
     console.error('Error fetching financial advice:', error);
     throw new Error('Failed to fetch financial advice');

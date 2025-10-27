@@ -63,17 +63,36 @@ export const Login = () => {
           setToken(data.token);
           handleLoginSuccess();
         })
-        .catch(({ response }) => {
-          console.log(response);
-          if (response && response.status === 400) {
-            setAlertMessage(
-              response?.data.error || "Invalid email or password"
-            );
-            setShowAlert(true);
-          } else {
-            setAlertMessage(response?.data.error);
-            setShowAlert(true);
+        .catch((err) => {
+          // ensure a safe string is shown to the user (never render raw objects)
+          const response = err?.response;
+          console.log(response || err);
+          let message = "Error logging in";
+          if (response) {
+            // prioritize common fields, then stringify any objects
+            if (typeof response.data === "string") {
+              message = response.data;
+            } else if (response.data?.message) {
+              message = response.data.message;
+            } else if (response.data?.error) {
+              const errField = response.data.error;
+              if (typeof errField === "string") message = errField;
+              else if (errField?.message) message = errField.message;
+              else {
+                try {
+                  message = JSON.stringify(errField);
+                } catch {
+                  message = "Server returned an error";
+                }
+              }
+            } else {
+              message = `Server responded with status ${response.status}`;
+            }
+          } else if (err?.message) {
+            message = err.message;
           }
+          setAlertMessage(String(message));
+          setShowAlert(true);
         });
     }
   };
@@ -166,12 +185,4 @@ export const Login = () => {
   );
 };
 
-export const SignUp = () => {
-  const navigate = useNavigate();
-  
-  const handleSignUpSuccess = () => {
-    // After successful signup
-    navigate('/auth/sign');
-  };
-  // ... rest of component
-};
+export default Login;
