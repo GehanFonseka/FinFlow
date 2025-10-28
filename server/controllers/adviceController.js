@@ -5,7 +5,7 @@ const makeRequestWithRetry = async (prompt, retries = 3, delay = 1000) => {
   while (attempt < retries) {
     try {
       const response = await axios.post(
-        "https://openrouter.ai/api/v1/chat/completions",
+        "https://finflow-proxy-dsf7bqbne3f3f3fe.uaenorth-01.azurewebsites.net/openai",
         {
           model: "openai/gpt-3.5-turbo",
           messages: [{ role: "user", content: prompt }],
