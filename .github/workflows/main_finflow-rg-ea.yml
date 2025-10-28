@@ -12,35 +12,42 @@ jobs:
     permissions:
       contents: read
 
-    defaults:
-      run:
-        working-directory: server  # your backend folder
-
     steps:
+      # 1️⃣ Checkout your repo
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
+      # 2️⃣ Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
+        working-directory: server
 
-      - name: Build (if any)
+      # 4️⃣ Build (if any)
+      - name: Build (if present)
         run: npm run build --if-present
+        working-directory: server
 
+      # 5️⃣ Run tests (optional)
       - name: Run tests (optional)
         run: npm run test --if-present
+        working-directory: server
 
-      - name: Zip artifact for deployment
-        run: zip -r server.zip .  # <- create zip inside `server/` folder
+      # 6️⃣ Zip the backend folder
+      - name: Zip backend for deployment
+        run: zip -r server.zip .
+        working-directory: server
 
-      - name: Upload artifact for deployment job
+      # 7️⃣ Upload artifact
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: server/server.zip  # <- inside workspace
+          path: server/server.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,12 +57,14 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      # 1️⃣ Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: node-app
-          path: ./artifact  # folder to store artifact
+          path: ./artifact
 
+      # 2️⃣ Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -63,9 +72,9 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_941A4F24EECD4A4E8C40A5B56FFCB501 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AFA51D8FDD04434CB41EF92D987C9385 }}
 
+      # 3️⃣ Deploy to Azure Web App (Production)
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'FinFlow-RG-EA'
-          slot-name: 'Production'
-          package: ./artifact/server.zip  # <- path inside workspace
+          package: ./artifact/server.zip
