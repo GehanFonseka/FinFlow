@@ -32,12 +32,24 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.warn("Blocked CORS request from:", origin);
         callback(new Error("CORS not allowed for this origin: " + origin));
       }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Accept",
+      "Origin",
+      "X-Requested-With",
+    ],
   })
 );
+
+// handle preflight requests properly
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -54,10 +66,13 @@ app.use("/api/advice", adviceRoutes);
 
 /* --------------------------- STATIC FRONTEND --------------------------- */
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/dist")));
-  app.get("*", (req, res) =>
-    res.sendFile(path.join(__dirname, "client/dist", "index.html"))
-  );
+  const clientBuildPath = path.join(__dirname, "client/dist");
+  app.use(express.static(clientBuildPath));
+
+  // fallback for React router
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(clientBuildPath, "index.html"));
+  });
 }
 
 /* --------------------------- ERROR HANDLER --------------------------- */
@@ -67,5 +82,5 @@ app.use((err, req, res, next) => {
 });
 
 /* --------------------------- SERVER --------------------------- */
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // ✅ use Azure-assigned port
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
