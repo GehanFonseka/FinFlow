@@ -90,7 +90,7 @@ export const SignUp = () => {
           text: "User registered successfully",
           icon: "success",
         }).then(() => {
-          navigate("/login");
+          navigate("/auth/login");
         });
 
         setFormData({
