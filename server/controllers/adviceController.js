@@ -10,6 +10,7 @@ const makeRequestWithRetry = async (prompt, retries = 3, delay = 1000) => {
           model: "openai/gpt-3.5-turbo",
           messages: [{ role: "user", content: prompt }],
         },
+        
         {
           headers: {
             "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
