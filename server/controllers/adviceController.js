@@ -1,34 +1,43 @@
 const axios = require("axios");
 
 const makeRequestWithRetry = async (prompt, retries = 3, delay = 1000) => {
+  const apiKey = process.env.OPENROUTER_API_KEY?.trim();
+
+  if (!apiKey) {
+    throw new Error("Missing OPENROUTER_API_KEY in environment variables");
+  }
+
   let attempt = 0;
   while (attempt < retries) {
     try {
       const response = await axios.post(
         "https://finflow-proxy-dsf7bqbne3f3f3fe.uaenorth-01.azurewebsites.net/openai",
         {
-          model: "openai/gpt-3.5-turbo",
+          model: "gpt-3.5-turbo",
           messages: [{ role: "user", content: prompt }],
         },
-        
         {
           headers: {
-            "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
             "HTTP-Referer": "http://localhost:3002",
-            "X-Title": "FinFlow AI Advice"
-          }
+            "X-Title": "FinFlow AI Advice",
+          },
+          timeout: 15000,
         }
       );
 
       return response.data.choices[0].message.content;
     } catch (error) {
-      if (error.response && error.response.status === 429) {
-        console.log(`Rate limit hit. Retrying in ${delay}ms...`);
+      if (error.response?.status === 429) {
+        console.warn(`Rate limit hit. Retrying in ${delay}ms...`);
         attempt++;
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise(res => setTimeout(res, delay));
+      } else if (error.response?.status === 401) {
+        console.error("❌ Unauthorized: Check your API key or proxy authentication settings.");
+        throw error;
       } else {
-        console.error("OpenRouter Error:", error.response ? error.response.data : error.message);
+        console.error("❌ OpenRouter Error:", error.response?.data || error.message);
         throw error;
       }
     }
@@ -36,6 +45,7 @@ const makeRequestWithRetry = async (prompt, retries = 3, delay = 1000) => {
 
   throw new Error("Exceeded retry attempts. Try again later.");
 };
+
 
 const getFinancialAdvice = async (req, res) => {
   const { 
